@@ -145,7 +145,7 @@ kubectl get pod memory-hog --show-labels
 #   期望：只剩 app=memory-hog，策略加的 label / 归属 annotation 都已清除
 ```
 
-本地 kind 实测结果（`memory-hog` 约 94Mi / 100Mi ≈ 94.9%）。完整命令、期望结果和截图见 [docs/测试步骤与截图.md](docs/测试步骤与截图.md)。
+本地 kind 实测结果（`memory-hog` 约 94Mi / 100Mi ≈ 94.9%）。完整命令、期望结果和截图见 [stepDocs/测试步骤与截图.md](stepDocs/测试步骤与截图.md)。
 
 | 场景 | 结果 |
 | --- | --- |
