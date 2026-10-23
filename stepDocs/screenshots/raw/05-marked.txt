@@ -1,0 +1,29 @@
+$ kubectl get pod memory-hog --show-labels
+NAME         READY   STATUS    RESTARTS   AGE   LABELS
+memory-hog   1/1     Running   0          33s   app=memory-hog,memory-overload=true
+
+$ kubectl get memorypolicy
+NAME             THRESHOLD   ACTION      MARKED   AGE
+example-policy   80          add-label   1        33s
+
+$ kubectl describe memorypolicy example-policy | tail -20
+  Marker:
+    Key:      memory-overload
+    Value:    true
+  Namespace:  default
+  Threshold:  80
+Status:
+  Conditions:
+    Last Transition Time:  2026-10-23T11:27:30Z
+    Message:               Observed 1 pods, 1 marked
+    Observed Generation:   1
+    Reason:                Reconciled
+    Status:                True
+    Type:                  Ready
+  Last Reconcile Time:     2026-10-23T11:27:30Z
+  Marked Pods:             1
+  Observed Pods:           1
+Events:
+  Type    Reason  Age   From                     Message
+  ----    ------  ----  ----                     -------
+  Normal  Marked  3s    memorypolicy-controller  Pod default/memory-hog marked (usage 94.9% >= 80%)

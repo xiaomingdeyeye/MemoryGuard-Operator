@@ -1,0 +1,17 @@
+$ kubectl patch memorypolicy example-policy --type merge -p '{"spec":{"threshold":99}}'
+memorypolicy.memory.example.com/example-policy patched
+
+$ kubectl get memorypolicy
+NAME             THRESHOLD   ACTION      MARKED   AGE
+example-policy   99          add-label   0        69s
+
+$ kubectl get pod memory-hog --show-labels
+NAME         READY   STATUS    RESTARTS   AGE   LABELS
+memory-hog   1/1     Running   0          69s   app=memory-hog
+
+$ kubectl describe memorypolicy example-policy | sed -n '/Events:/,$p'
+Events:
+  Type    Reason    Age   From                     Message
+  ----    ------    ----  ----                     -------
+  Normal  Marked    39s   memorypolicy-controller  Pod default/memory-hog marked (usage 94.9% >= 80%)
+  Normal  Unmarked  35s   memorypolicy-controller  Pod default/memory-hog unmarked (usage 94.9% < 99%)

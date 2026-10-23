@@ -1,0 +1,105 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: memoryguard-controller-manager
+  namespace: memoryguard-system
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: memoryguard-manager-role
+rules:
+- apiGroups:
+  - memory.example.com
+  resources:
+  - memorypolicies
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
+  - memory.example.com
+  resources:
+  - memorypolicies/status
+  verbs:
+  - get
+  - update
+  - patch
+- apiGroups:
+  - memory.example.com
+  resources:
+  - memorypolicies/finalizers
+  verbs:
+  - update
+- apiGroups:
+  - ""
+  resources:
+  - pods
+  verbs:
+  - get
+  - list
+  - watch
+  - update
+  - patch
+- apiGroups:
+  - ""
+  resources:
+  - events
+  verbs:
+  - create
+  - patch
+- apiGroups:
+  - metrics.k8s.io
+  resources:
+  - pods
+  verbs:
+  - get
+  - list
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: memoryguard-manager-rolebinding
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: memoryguard-manager-role
+subjects:
+- kind: ServiceAccount
+  name: memoryguard-controller-manager
+  namespace: memoryguard-system
+---
+# Leader-election permissions (namespaced) used when --leader-elect is enabled.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: memoryguard-leader-election-role
+  namespace: memoryguard-system
+rules:
+- apiGroups: [""]
+  resources: [configmaps]
+  verbs: [get, list, watch, create, update, patch, delete]
+- apiGroups: [coordination.k8s.io]
+  resources: [leases]
+  verbs: [get, list, watch, create, update, patch, delete]
+- apiGroups: [""]
+  resources: [events]
+  verbs: [create, patch]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: memoryguard-leader-election-rolebinding
+  namespace: memoryguard-system
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: memoryguard-leader-election-role
+subjects:
+- kind: ServiceAccount
+  name: memoryguard-controller-manager
+  namespace: memoryguard-system

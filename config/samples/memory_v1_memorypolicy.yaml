@@ -1,0 +1,30 @@
+apiVersion: memory.example.com/v1
+kind: MemoryPolicy
+metadata:
+  name: example-policy
+spec:
+  # Target namespace (optional). Omit namespace/namespaces to watch all namespaces.
+  namespace: "default"
+  # Memory usage threshold percentage (80 = 80% of the pod's memory limit).
+  threshold: 80
+  # Action: add-label or add-annotation.
+  action: "add-label"
+  # Key/value applied to overloaded pods.
+  marker:
+    key: "memory-overload"
+    value: "true"
+---
+# Multi-namespace example (advanced challenge): watch several namespaces at once.
+apiVersion: memory.example.com/v1
+kind: MemoryPolicy
+metadata:
+  name: multi-ns-policy
+spec:
+  namespaces:
+  - "default"
+  - "team-a"
+  threshold: 75
+  action: "add-annotation"
+  marker:
+    key: "memory.example.com/overloaded"
+    value: "true"

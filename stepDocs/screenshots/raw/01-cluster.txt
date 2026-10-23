@@ -1,0 +1,11 @@
+$ kubectl get nodes
+NAME                        STATUS   ROLES           AGE   VERSION
+memoryguard-control-plane   Ready    control-plane   19m   v1.31.0
+
+$ kubectl get crd memorypolicies.memory.example.com
+NAME                                CREATED AT
+memorypolicies.memory.example.com   2026-10-23T11:10:52Z
+
+$ kubectl -n kube-system get deploy metrics-server
+NAME             READY   UP-TO-DATE   AVAILABLE   AGE
+metrics-server   1/1     1            1           15m

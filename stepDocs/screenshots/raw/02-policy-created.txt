@@ -1,0 +1,6 @@
+$ kubectl apply -f config/samples/example-policy.yaml
+memorypolicy.memory.example.com/example-policy created
+
+$ kubectl get memorypolicy
+NAME             THRESHOLD   ACTION      MARKED   AGE
+example-policy   80          add-label   0        0s

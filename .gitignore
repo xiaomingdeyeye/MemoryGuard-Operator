@@ -1,0 +1,24 @@
+# Binaries
+bin/
+*.exe
+*.dll
+*.so
+*.dylib
+manager
+
+# Test / coverage
+cover.out
+*.coverprofile
+*.test
+
+# Go workspace
+vendor/
+
+# IDE / OS
+.idea/
+.vscode/
+*.swp
+.DS_Store
+
+# Kind / kube leftovers
+kind-config.yaml
